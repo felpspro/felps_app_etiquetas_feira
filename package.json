@@ -1,0 +1,40 @@
+{
+  "name": "felps_app_etiquetas_feira",
+  "packageManager": "yarn@4.4.1",
+  "main": "server.js",
+  "type": "module",
+  "bin": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node test.js",
+    "build": "pkg . --targets node16-win-x64 --output terminalEtiqueta.exe"
+  },
+  "imports": {
+    "#services/*.js": "./src/services/*.js"
+  },
+  "dependencies": {
+    "@tauri-apps/api": "^2.4.0",
+    "ejs": "^3.1.10",
+    "inquirer": "^12.5.0",
+    "pdf-lib": "^1.17.1",
+    "pdf-to-printer": "^5.6.0",
+    "punycode": "^2.3.1",
+    "punycode.js": "^2.3.1",
+    "puppeteer": "^24.4.0"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.27.0",
+    "@babel/preset-env": "^7.26.9",
+    "nexe": "^5.0.0-beta.4",
+    "pkg": "^5.8.1"
+  },
+  "pkg": {
+    "scripts": "dist/**/*.js",
+    "assets": [
+      "node_modules/**/*",
+      "node_modules/puppeteer/.local-chromium/**/*",
+      "src/services/**/*"
+    ]
+  }
+}
