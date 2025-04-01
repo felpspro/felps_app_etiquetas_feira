@@ -1,7 +1,7 @@
-import servicePrint from "./src/services/Printer/index.js";
-import servicePDF from "./src/services/PDF/index.js";
-import serviceQuestions from "./src/services/Questions/index.js";
-import serviceConsole from "./src/services/Console/index.js";
+import servicePrint from "#services/Printer/index.js";
+import servicePDF from "#services/PDF/index.js";
+import serviceQuestions from "#services/Questions/index.js";
+import serviceConsole from "#services/Console/index.js";
 /*  */
 import { fileURLToPath } from 'url';
 import path from 'path';
@@ -46,10 +46,15 @@ class Main {
             await Console.consoleLog({ message: 'Carregando modulos e impressoras.. Aguarde', awaitClear: 2000, endClear:true });
             await Console.consoleLog({ message: 'Atencao: Para que o terminal funcione perfeitamente o "Monitor de porta LPR" e "Servico de impressao LPD" precisam esta ativos!', awaitClear: 2000, endClear:true });
             
-            const response1 = await Questions.questionSimple({ message: 'Digite o SKU' });
+            const response1 = await Questions.questionSimple({ message: 'Digite o SKU ou bipe o codigo de barras' });
             // Validando sku
             const dataProducts = await csvToJson(`${downloadsPath}/database.csv`)
-            const $find = dataProducts.find(t => t.codigo == response1.value.toUpperCase()) || null;
+            const $find = dataProducts.find(t => {
+                const val = response1.value.toUpperCase();
+                if(t.codigo == val || t.barras == val){
+                    return t;
+                }
+            }) || null;
             if($find==null){
                 await Console.consoleLog({ message: 'Produto nao encontrado.. Tente novamente', awaitClear: 2000 });
                 this.startApp();
