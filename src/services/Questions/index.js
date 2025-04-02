@@ -5,10 +5,10 @@ export default class Questions {
 
     }
 
-    questionSimple = async({ message = 'Mensagem', name = 'value' }={}) => {
+    questionSimple = async({ message = 'Mensagem', name = 'value', defaultValue = '' }={}) => {
         try {
             return await inquirer
-            .prompt({ type:'input', message: `${message}: `, name })
+            .prompt({ type:'input', message: `${message}: `, name, default:defaultValue })
             .then(respostas => respostas)
             .catch(err => err)
         } catch (error) {

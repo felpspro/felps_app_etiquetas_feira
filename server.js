@@ -51,7 +51,7 @@ class Main {
             const dataProducts = await csvToJson(`${downloadsPath}/database.csv`)
             const $find = dataProducts.find(t => {
                 const val = response1.value.toUpperCase();
-                if(t.codigo == val || t.barras == val){
+                if(t.codigo == val || t.ean == val){
                     return t;
                 }
             }) || null;
@@ -62,15 +62,15 @@ class Main {
             }
 
             //
-            const response2 = await Questions.questionSimple({ message: 'Digite o valor final (por) (use somente virgulas para casas decimais sem o "R$")' });
+            const response2 = await Questions.questionSimple({ message: `${$find.nome}: Digite o valor (use virgula para decimais ou deixe em branco para puxar o valor definido na planilha)`, defaultValue: $find.valor_para });
             const response3 = await Questions.questionSimple({ message: 'Quantidade de etiquetas' });
-
+            const response3Value = response2.value.replace(/[^\d,\.]/g, '')
             //
             const dirFile = await PDF.createLabel({
                 sku: $find.codigo,
                 descricao: $find.nome,
-                priceOld: $find.pantigo,
-                priceNew: formatCurrency(parseFloat(response2.value.replaceAll(',', '.'))),
+                priceOld: $find.valor_de,
+                priceNew: formatCurrency(parseFloat(response3Value.replaceAll(',', '.'))),
                 amount: parseInt(response3.value || 0),
             });
 
