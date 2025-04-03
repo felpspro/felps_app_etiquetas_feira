@@ -63,14 +63,16 @@ class Main {
 
             //
             const response2 = await Questions.questionSimple({ message: `${$find.nome}: Digite o valor (use virgula para decimais ou deixe em branco para puxar o valor definido na planilha)`, defaultValue: $find.valor_para });
+            const response2Value = response2.value.replace(/[^\d,\.]/g, '');
+            const $valChecked = response2.value.indexOf('%') > -1 ? response2.value : formatCurrency(parseFloat(response2Value.replaceAll(',', '.')))
+            //
             const response3 = await Questions.questionSimple({ message: 'Quantidade de etiquetas' });
-            const response3Value = response2.value.replace(/[^\d,\.]/g, '')
             //
             const dirFile = await PDF.createLabel({
                 sku: $find.codigo,
                 descricao: $find.nome,
                 priceOld: $find.valor_de,
-                priceNew: formatCurrency(parseFloat(response3Value.replaceAll(',', '.'))),
+                priceNew: $valChecked,
                 amount: parseInt(response3.value || 0),
             });
 
